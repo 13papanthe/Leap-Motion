@@ -1,0 +1,49 @@
+Leap.py is the main file that was very very slightly modified from the leap motion developer. 
+all adjusted was the x,y,z axis values for sending data. 
+you have to have the leap motion developer and the leap motion software installed on the computer you will be running it from.
+this file allows the other (new gesture list) to call the different functions out of it.
+
+
+The new gestures list is the file that you define what you will be sending over sockets. 
+first step is to get your ip addresses set for the computer your on and the pi that will be listening. 
+then you set up which gestures you want to search for in the infinite loop. 
+calling certain premade classes and variables from the leap file, we are able to distinguish the left and right hand, 
+different fingers, and number of fingers. I used a series of if else statements as an easy way to distinguish between 
+the different gestures I wanted. By seperating the left and right hand is how I was able to control the car and the mini 
+claw on our project. For the claw part I had to use swipeDir and math.fabs to figure out the coordinates and variables 
+needed for swiping your hand across the sensors. Then for each gesture that was recognized in the list, it send out a phrase 
+over the socket to the raspberry Pi. 
+
+
+The next file is called car-claw. This was hard for me to set up for the raspberry pi to listen for both the car and the 
+claw commands and disguinsh between them, so I made 2 seperate files to be ran simutaneously on the pi. The first one listens 
+only for the car commands (front back left right). The type of car that we had had an ESC (electronic speed controller) on it 
+for the back motor since it was a higher voltage DC motor. First off you had to configure the values for the ESC to run. Set 
+it for pulse width modulation and using the GPIO ports on the board is how I was able to control the speed and direction for 
+the motor. When I first ran the code without know the frequency to run it at, it went crazy fast, and after researched and 
+just playing around I was able to figure out that the motor was responding very well to controls in the 1500 range. It also 
+helps to know the exact specs of your ESC. I set that as the speed variable for 0 or not moving. and by increasing it by 
+increments of 10 at a time (up for forward movement and down for backwards movement) I was able to calibrate it at the speed 
+that I wanted to use.
+
+
+The steering was a little servo motor so I just set that at the neutral position which ended up @ 50Hz to be 7.5 to keep the 
+wheels straight. By moving the variable up or down is how i was able to rotate the servo to go left and right. Then I just 
+used combos of the above to go forwards and left or backwards and straight, etc. Each command was listened from the leap and 
+then put out the controls.
+
+
+The car-claw2 is the 2nd program I ran on the Pi to control the mini claw gripper. I was using an Arduino Motor Shield board 
+at first to control the little servos, however, it seemed to be burning up faster than anything and causing lag/kernel issues.
+So thats where you see the clawmotorhat file. The only difference between these two is to code to control the motors is 
+used by a raspberry pi motor hat instead of the amspi board. For the amspi code, it was running the servos for a set amount 
+of time either clockwise or counterclockwise to get the rotation/movement for the claw. at the bottom for the amspi code I
+have stop all the other motors, becuase randomly the other motors would keep running. For the motor hat, you have to do a 
+few more steps to initialize it, however, running to motors gave me way less errors than anything, and it was easier to 
+understand in my humble opinion.
+
+
+
+And there you have it. That is all the code needed to run the car/claw combo. 
+Here is the video link to see how it works overall. https://www.youtube.com/watch?v=weT6DzxxCMo
+I will also upload a few pictures of the overall setup and some wiring in case anyone else wants to try it or give me any feedback!
