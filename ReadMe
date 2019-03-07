@@ -1,3 +1,6 @@
+This was my Electrical Engineering Tech Senior Deisgn Project that was done over 2017-2018. 
+
+
 Leap.py is the main file that was very very slightly modified from the leap motion developer. 
 all adjusted was the x,y,z axis values for sending data. 
 you have to have the leap motion developer and the leap motion software installed on the computer you will be running it from.
